@@ -40,6 +40,8 @@
 #include "pins_arduino.h"
 #include "twi.h"
 
+uint8_t volatile r_address;	// Slave receive address
+
 static volatile uint8_t twi_state;
 static volatile uint8_t twi_slarw;
 static volatile uint8_t twi_sendStop;     // should the transaction end with a stop
@@ -519,6 +521,7 @@ ISR(TWI_vect)
 
     // Slave Receiver
     case TW_SR_SLA_ACK:   // addressed, returned ack
+      r_address = TWDR;
     case TW_SR_GCALL_ACK: // addressed generally, returned ack
     case TW_SR_ARB_LOST_SLA_ACK:   // lost arbitration, returned ack
     case TW_SR_ARB_LOST_GCALL_ACK: // lost arbitration, returned ack
